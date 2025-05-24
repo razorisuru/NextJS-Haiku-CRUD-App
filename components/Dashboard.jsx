@@ -30,7 +30,7 @@ export default async function Dashboard(props) {
             <p className="text-gray-500 mt-2 text-sm">
               Created at: {new Date(haiku.createdAt).toLocaleDateString()}
             </p>
-            <Link href={`/edit-haiku/${haiku._id.toString()}`}>EDIT</Link> 
+            <Link href={`/edit-haiku/${haiku._id.toString()}`}>EDIT</Link>
           </div>
         );
       })}

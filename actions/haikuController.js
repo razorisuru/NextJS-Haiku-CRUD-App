@@ -77,3 +77,30 @@ export const createHaiku = async function (prevState, formData) {
   const newHaiku = await haikuCollection.insertOne(results.ourHaiku);
   return redirect("/");
 };
+
+export const editHaiku = async function (prevState, formData) {
+  const user = await getUserFromCookie();
+  if (!user) {
+    return redirect("/");
+  }
+
+  const results = await sharedLogic(formData, user);
+
+  if (results.errors.line1 || results.errors.line2 || results.errors.line3) {
+    return {
+      error: results.errors,
+    };
+  }
+
+  const haikuCollection = await getCollection("haikus");
+  let haikuId = formData.get("haikuId");
+  if (typeof haikuId !== "string") haikuId = "";
+
+  await haikuCollection.findOneAndUpdate(
+    { _id: ObjectId.createFromHexString(haikuId) },
+    {
+      $set: results.ourHaiku,
+    }
+  );
+  return redirect("/");
+};
