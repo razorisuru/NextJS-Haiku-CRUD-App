@@ -103,6 +103,9 @@ npm run dev
 ```env
 CONNECTIONSTRING=      # MongoDB connection string
 JWTSECRET=            # Secret key for JWT signing
+NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=           # Cloudinary API
+NEXT_PUBLIC_CLOUDINARY_API_KEY=
+CLOUDINARY_API_SECRET=
 ```
 
 ## Contributing
