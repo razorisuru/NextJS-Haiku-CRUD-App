@@ -4,6 +4,7 @@ import { getUserFromCookie } from "@/lib/getUser";
 import { redirect } from "next/navigation";
 import { ObjectId } from "mongodb";
 import { getCollection } from "@/lib/db";
+import { cookies } from "next/headers";
 
 function isAlphanumericWithBaics(str) {
   return /^[a-zA-Z0-9 .,]+$/.test(str);
@@ -75,6 +76,8 @@ export const createHaiku = async function (prevState, formData) {
 
   const haikuCollection = await getCollection("haikus");
   const newHaiku = await haikuCollection.insertOne(results.ourHaiku);
+
+    cookies().set('success', 'Haiku created successfully!');
   return redirect("/");
 };
 
@@ -100,9 +103,7 @@ export const editHaiku = async function (prevState, formData) {
     _id: ObjectId.createFromHexString(haikuId),
   });
   if (haikuInQuestion.author.toString() !== user.userId) {
-    return redirect("/").with({
-      error: "You are not allowed to edit this haiku.",
-    });
+    return redirect("/");
   }
 
   await haikuCollection.findOneAndUpdate(
@@ -111,7 +112,34 @@ export const editHaiku = async function (prevState, formData) {
       $set: results.ourHaiku,
     }
   );
-  return redirect("/").with({
-    success: "Haiku updated successfully!",
-  });
+  cookies().set('success', 'Haiku updated successfully!');
+  return redirect("/");
 };
+
+
+export const deleteHaiku = async function (formData) {
+  const user = await getUserFromCookie();
+  if (!user) {
+    return redirect("/");
+  }
+
+  let haikuId = formData.get("id");
+  if (typeof haikuId !== "string") haikuId = "";
+
+  const haikuCollection = await getCollection("haikus");
+  const haikuInQuestion = await haikuCollection.findOne({
+    _id: ObjectId.createFromHexString(haikuId),
+  });
+
+  if (haikuInQuestion.author.toString() !== user.userId) {
+    return redirect("/");
+  }
+
+  await haikuCollection.deleteOne({
+    _id: ObjectId.createFromHexString(haikuId),
+  });
+  
+  cookies().set('success', 'Haiku deleted successfully!');
+  return redirect("/");
+
+}

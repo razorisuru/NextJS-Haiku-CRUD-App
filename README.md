@@ -1,16 +1,16 @@
-# Next.js Authentication System with DaisyUI
+# Next.js Haiku CRUD Application with Authentication
 
-A modern authentication system built with Next.js 14, featuring a clean UI powered by DaisyUI and Tailwind CSS, with MongoDB as the database backend.
+A full-stack application built with Next.js 14 that allows users to create, read, update, and delete haikus with authentication, featuring a clean UI powered by DaisyUI and Tailwind CSS.
 
 ## Features
 
-- User registration with validation
-- Secure login system
-- JWT-based authentication
-- HTTP-only cookie session management
+- User registration and authentication
+- Create, read, update, and delete haikus
+- Form validation with syllable counting
+- Success notifications using toast messages
+- Protected routes and user-specific content
 - MongoDB database integration
 - Responsive UI with DaisyUI components
-- Form validation and error handling
 
 ## Tech Stack
 
@@ -20,7 +20,6 @@ A modern authentication system built with Next.js 14, featuring a clean UI power
   - Tailwind CSS
   - DaisyUI
 - **Backend:**
-
   - Next.js Server Actions
   - MongoDB
   - bcrypt for password hashing
@@ -35,7 +34,6 @@ A modern authentication system built with Next.js 14, featuring a clean UI power
 
 ```bash
 git clone https://github.com/razorisuru/NextJS-Haiku-CRUD-App
-cd daisy-login
 ```
 
 2. Install dependencies:
@@ -62,50 +60,57 @@ npm run dev
 
 ```
 ├── actions/
-│   └── userController.js    # Server actions for auth
+│   ├── userController.js    # Server actions for auth
+│   └── haikuController.js   # Server actions for haiku CRUD
 ├── app/
 │   ├── login/              # Login page
-│   ├── globals.css         # Global styles
+│   ├── edit-haiku/        # Edit haiku page
+│   ├── globals.css        # Global styles
 │   ├── layout.jsx         # Root layout
-│   └── page.jsx          # Home page
+│   └── page.jsx           # Home page
 ├── components/
-│   ├── Header.jsx        # Navigation header
-│   └── RegisterForm.jsx  # Registration form
+│   ├── Header.jsx         # Navigation header
+│   ├── Dashboard.jsx      # User's haiku dashboard
+│   ├── RegisterForm.jsx   # Registration form
+│   └── HaikuForm.jsx      # Haiku inputs
 └── lib/
-    ├── db.js            # MongoDB connection
-    └── getUser.js       # User authentication utilities
+    ├── db.js             # MongoDB connection
+    └── getUser.js        # User authentication utilities
 ```
 
 ## Features in Detail
 
 - **User Registration:**
-
   - Username validation (alphanumeric, 3-30 characters)
   - Password requirements (minimum 8 characters)
   - Duplicate username checking
   - Secure password hashing
 
 - **Authentication:**
-
   - JWT-based authentication
   - Secure HTTP-only cookies
   - Protected routes
   - Automatic redirects
 
+- **Haiku Management:**
+  - Create new haikus with syllable validation
+  - Edit existing haikus
+  - Delete haikus
+  - View all haikus in a personal dashboard
+  - Basic punctuation and alphanumeric validation
+
 - **UI/UX:**
   - Clean, modern interface with DaisyUI
   - Responsive design
   - Form validation feedback
-  - Success/error notifications
+  - Success/error notifications using toast messages
+  - User-friendly dashboard layout
 
 ## Environment Variables
 
 ```env
 CONNECTIONSTRING=      # MongoDB connection string
 JWTSECRET=            # Secret key for JWT signing
-NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME=           # Cloudinary API
-NEXT_PUBLIC_CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
 ```
 
 ## Contributing
