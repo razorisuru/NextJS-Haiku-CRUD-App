@@ -19,8 +19,8 @@ A modern authentication system built with Next.js 14, featuring a clean UI power
   - React 18
   - Tailwind CSS
   - DaisyUI
-  
 - **Backend:**
+
   - Next.js Server Actions
   - MongoDB
   - bcrypt for password hashing
@@ -32,23 +32,26 @@ A modern authentication system built with Next.js 14, featuring a clean UI power
 ## Getting Started
 
 1. Clone the repository:
+
 ```bash
 git clone https://github.com/razorisuru/NextJS-Haiku-CRUD-App
 cd daisy-login
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
-3. Create a `.env` file in the root directory with the following variables:
+3. Copy the `.env.example` file as `.env` in the root directory with the variables:
+
 ```env
-CONNECTIONSTRING=your_mongodb_connection_string
-JWTSECRET=your_jwt_secret_key
+copy .env.example .env
 ```
 
 4. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -76,12 +79,14 @@ npm run dev
 ## Features in Detail
 
 - **User Registration:**
+
   - Username validation (alphanumeric, 3-30 characters)
   - Password requirements (minimum 8 characters)
   - Duplicate username checking
   - Secure password hashing
 
 - **Authentication:**
+
   - JWT-based authentication
   - Secure HTTP-only cookies
   - Protected routes
@@ -111,4 +116,3 @@ JWTSECRET=            # Secret key for JWT signing
 ## License
 
 This project is licensed under the ISC License - see the [package.json](package.json) file for details.
-
