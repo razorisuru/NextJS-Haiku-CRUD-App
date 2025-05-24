@@ -96,11 +96,22 @@ export const editHaiku = async function (prevState, formData) {
   let haikuId = formData.get("haikuId");
   if (typeof haikuId !== "string") haikuId = "";
 
+  const haikuInQuestion = await haikuCollection.findOne({
+    _id: ObjectId.createFromHexString(haikuId),
+  });
+  if (haikuInQuestion.author.toString() !== user.userId) {
+    return redirect("/").with({
+      error: "You are not allowed to edit this haiku.",
+    });
+  }
+
   await haikuCollection.findOneAndUpdate(
     { _id: ObjectId.createFromHexString(haikuId) },
     {
       $set: results.ourHaiku,
     }
   );
-  return redirect("/");
+  return redirect("/").with({
+    success: "Haiku updated successfully!",
+  });
 };

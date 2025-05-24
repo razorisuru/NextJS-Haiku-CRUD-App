@@ -4,13 +4,15 @@ import { createHaiku, editHaiku } from "@/actions/haikuController";
 import { useFormState } from "react-dom";
 
 export default function HaikuForm(props) {
-  let action;
+  let action, buttonName;
   if (props.action === "edit") {
     action = editHaiku;
+    buttonName = "Update Haiku";
   }
 
   if (props.action === "create") {
     action = createHaiku;
+    buttonName = "Create Haiku";
   }
 
   const [state, formAction] = useFormState(action, {});
@@ -68,7 +70,7 @@ export default function HaikuForm(props) {
         </div>
         <input type="hidden" name="haikuId" defaultValue={props.haiku?._id.toString()}/>
         <button type="submit" className="btn btn-primary">
-          Create Haiku
+          {buttonName}
         </button>
       </form>
     </>

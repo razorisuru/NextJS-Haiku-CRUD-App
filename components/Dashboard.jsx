@@ -18,6 +18,7 @@ export default async function Dashboard(props) {
     <div className="container mx-auto p-10">
       <h2 className="text-center text-2xl text-gray-500 mb-5">Your Haikus</h2>
 
+
       {haikus.map((haiku, index) => {
         return (
           <div
