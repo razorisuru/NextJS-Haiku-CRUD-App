@@ -1,15 +1,12 @@
 import RegisterForm from "@/components/RegisterForm";
 import { getUserFromCookie } from "@/lib/getUser";
+import Dashboard from "@/components/Dashboard";
 
 export default async function page() {
   const user = await getUserFromCookie();
   return (
     <>
-      {user && (
-        <p className="text-center mb-5 text-2xl text-amber-100">
-          You are logged in as
-        </p>
-      )}
+      {user && <Dashboard user={user} />}
       {!user && (
         <>
           <p className="text-center mb-5 text-2xl text-amber-100">
@@ -17,6 +14,7 @@ export default async function page() {
           </p>
 
           <RegisterForm />
+
           <div className="mx-auto max-w-xs mt-5">
             <div className="collapse collapse-plus bg-base-100 border border-base-300">
               <input type="radio" name="my-accordion-3" defaultChecked />
