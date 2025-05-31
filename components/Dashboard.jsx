@@ -6,7 +6,7 @@ async function getHaikus(id) {
   const collection = await getCollection("haikus");
   const results = await collection
     .find({ author: ObjectId.createFromHexString(id) })
-    .sort({ createdAt: -1 })
+    .sort({ _id: -1 })
     .toArray();
 
   return results;

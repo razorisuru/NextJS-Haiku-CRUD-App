@@ -5,6 +5,13 @@ import { redirect } from "next/navigation";
 import { ObjectId } from "mongodb";
 import { getCollection } from "@/lib/db";
 import { cookies } from "next/headers";
+import cloudinary from "cloudinary";
+
+const cloudinaryConfig = cloudinary.config({
+  cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.NEXT_PUBLIC_CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
 function isAlphanumericWithBaics(str) {
   return /^[a-zA-Z0-9 .,]+$/.test(str);
@@ -57,6 +64,18 @@ async function sharedLogic(formData, user) {
     errors.line3 =
       "Line #3 can only contain letters, numbers, spaces, and basic punctuation.";
 
+  // verify signature
+  const expectedSignature = cloudinary.utils.api_sign_request(
+    { public_id: formData.get("public_id"), version: formData.get("version") },
+    cloudinaryConfig.api_secret
+  );
+  if (expectedSignature === formData.get("signature")) {
+    ourHaiku.photo = formData.get("public_id");
+  }
+
+  // Convert ObjectId to string to avoid serialization issues
+  ourHaiku.author = ourHaiku.author.toString();
+
   return { errors, ourHaiku };
 }
 
@@ -74,10 +93,15 @@ export const createHaiku = async function (prevState, formData) {
     };
   }
 
-  const haikuCollection = await getCollection("haikus");
-  const newHaiku = await haikuCollection.insertOne(results.ourHaiku);
+  // Convert string back to ObjectId for database operation
+  results.ourHaiku.author = ObjectId.createFromHexString(
+    results.ourHaiku.author
+  );
 
-    cookies().set('success', 'Haiku created successfully!');
+  // save into db
+  const haikusCollection = await getCollection("haikus");
+  const result = await haikusCollection.insertOne(results.ourHaiku);
+
   return redirect("/");
 };
 
@@ -95,13 +119,22 @@ export const editHaiku = async function (prevState, formData) {
     };
   }
 
+  // Convert string back to ObjectId for database operations
+  results.ourHaiku.author = ObjectId.createFromHexString(
+    results.ourHaiku.author
+  );
+
   const haikuCollection = await getCollection("haikus");
   let haikuId = formData.get("haikuId");
   if (typeof haikuId !== "string") haikuId = "";
 
-  const haikuInQuestion = await haikuCollection.findOne({
+  // make sure you are the other of this post, otherwise have operation fail
+  const haikuInQuestion = await haikusCollection.findOne({
     _id: ObjectId.createFromHexString(haikuId),
   });
+  if (haikuInQuestion.author.toString() !== user.userId) {
+    return redirect("/");
+  }
   if (haikuInQuestion.author.toString() !== user.userId) {
     return redirect("/");
   }
@@ -112,10 +145,9 @@ export const editHaiku = async function (prevState, formData) {
       $set: results.ourHaiku,
     }
   );
-  cookies().set('success', 'Haiku updated successfully!');
+
   return redirect("/");
 };
-
 
 export const deleteHaiku = async function (formData) {
   const user = await getUserFromCookie();
@@ -138,8 +170,7 @@ export const deleteHaiku = async function (formData) {
   await haikuCollection.deleteOne({
     _id: ObjectId.createFromHexString(haikuId),
   });
-  
-  cookies().set('success', 'Haiku deleted successfully!');
-  return redirect("/");
 
-}
+  cookies().set("success", "Haiku deleted successfully!");
+  return redirect("/");
+};
