@@ -129,7 +129,7 @@ export const editHaiku = async function (prevState, formData) {
   if (typeof haikuId !== "string") haikuId = "";
 
   // make sure you are the other of this post, otherwise have operation fail
-  const haikuInQuestion = await haikusCollection.findOne({
+  const haikuInQuestion = await haikuCollection.findOne({
     _id: ObjectId.createFromHexString(haikuId),
   });
   if (haikuInQuestion.author.toString() !== user.userId) {
