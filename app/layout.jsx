@@ -32,10 +32,21 @@ export default function RootLayout({ children }) {
         </header>
         <main className="container mx-auto p-10">{children}</main>
 
-        <footer className="footer footer-center p-10 ">
-          <p className="text-gray-400">
-            Copyright &copy; {new Date().getFullYear()} - All Right Reserved
-          </p>
+        <footer className="footer p-4 bg-gray-800 text-center fixed bottom-0 w-full">
+          <div className="flex justify-center items-center gap-1">
+            <p className="text-gray-400">
+              Copyright &copy; {new Date().getFullYear()}{" "}
+            </p>
+            <a
+              className="text-purple-500 hover:text-purple-400 transition-colors"
+              href="https://razorisuru.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              RaZoR
+            </a>
+            <p className="text-gray-400">- All Rights Reserved</p>
+          </div>
         </footer>
       </body>
     </html>

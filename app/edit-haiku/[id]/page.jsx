@@ -25,7 +25,7 @@ export default async function Page(props) {
   return (
     <>
       <h2 className="text-center text-4xl text-gray-400 mb-5">
-        Edit Haiku {props.params.id}
+        Edit Haiku 
       </h2>
       <HaikuForm haiku={plainDoc} action="edit" />
     </>
