@@ -11,7 +11,7 @@ export const metadata = {
       "Write, edit, and share haiku poems with images. Join a creative community on HaikuVerse.",
     images: [
       {
-        url: "https://cdn.tinybuddha.com/wp-content/uploads/2016/05/Forgive-yourself-first.jpg", // Place this image in your public/ directory
+        url: "https://cdn.slidesharecdn.com/ss_thumbnails/ghaikulessonpresentation-090820222228-phpapp02-thumbnail.jpg", // Place this image in your public/ directory
         width: 1200,
         height: 630,
         alt: "HaikuVerse – Create, Share & Discover Haiku Poetry",
